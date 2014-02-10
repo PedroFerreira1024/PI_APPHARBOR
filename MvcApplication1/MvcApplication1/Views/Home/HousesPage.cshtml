@@ -1,0 +1,21 @@
+﻿@using IMobileDataModel
+@using IMobileLogic
+@model PageMap
+@{
+    ViewBag.Title = "HousesPage";
+}
+
+
+   @foreach (Estate house in Model.pages[Model.getCurrentPage()].pageList)
+{
+    <div class="media">
+        <a class="pull-left" href="/HouseX/@(house.nameShort)">
+            <img class="media-object" src="../Photos/@house.nameShort/@house.photos.mainPhoto" alt="...">
+        </a>
+        <div class="media-body">
+            <h4 class="media-heading">@(house.nameShort) - @(house.averageRate)*</h4>
+            @(house.pricePerWeek) / @(house.location.name)
+        </div>
+    </div>
+}
+

@@ -1,0 +1,67 @@
+﻿@using IMobileDataModel
+@model IEnumerable<Estate>
+
+@{ViewBag.Title = "Home";}
+
+@section head {
+    <link href="../Content/particular/Home.css" rel="stylesheet" />
+    
+}
+
+@section NavBarButtons{
+    <li class="active"><a href="../Index">Home</a></li>
+    <li><a href="../Houses">Houses</a></li>
+    <li><a href="../AddHouse">Add a House</a></li>
+    <li><a href="../About">About</a></li>
+}
+
+@section junbotron{
+    <!-- Welcome Jumbotron -->
+
+        <!-- Main component for a primary marketing message or call to action -->
+        <div class="jumbotron">
+            <h1>Welcome to IMobile</h1>
+            <p>Aqui estará presente um texto apelativo, estilo "venha cá que é bonito", e de introdução à aplicação</p>
+        </div>
+
+}
+
+<body>
+
+    <!-- Last inserted Houses List -->
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Last Inserted Houses</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+
+                    @foreach(Estate house in Model)
+                    {
+                        <div class="col-sm-6 col-md-3">
+                            @for (int i = 0; i < 5; ++i)
+                            {
+                                if (i < house.averageRate)
+                                {
+                                    <span class="glyphicon glyphicon-star"></span>
+                                }
+                                else
+                                {
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                }
+                            }
+                            <a href="/HouseX/@(house.nameShort)" class="thumbnail">
+                                <img src="../Photos/@house.nameShort/@house.photos.mainPhoto" alt="...">
+                                <em class="LastInserted-info">@(house.nameShort) // @(house.pricePerWeek)&#128</em>
+                            </a>
+                        </div>
+                    }
+                </div> <!-- /row-->
+            </div>
+        </div>
+    <!-- /Last inserted Houses List -->
+</body>
+
+
+

@@ -1,0 +1,157 @@
+﻿@using IMobileDataModel
+@model Estate
+@{
+    ViewBag.Title = "AddHouse";
+}
+
+@section head {
+    <link href="../Content/particular/AddHouse.css" rel="stylesheet" />
+    <script>
+        function loadXMLDoc() {
+            var xmlhttp;
+
+            xmlhttp = new XMLHttpRequest();
+
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    document.getElementById("houseList").innerHTML = xmlhttp.responseText;
+                }
+            }
+            xmlhttp.open("GET", "../../Index", true);
+            xmlhttp.send();
+        }
+    </script>
+}
+@section NavBarButtons
+{
+    <li><a href="../Index">Home</a></li>
+    <li><a href="../Houses">Houses</a></li>
+    <li class="active"><a href="../AddHouse">Add a House</a></li>
+    <li><a href="../About">About</a></li>
+}
+
+@section junbotron{
+    <!-- Houses Page Welcome -->
+    
+    <!-- Main component for a primary marketing message or call to action -->
+    <div class="jumbotron">
+        <h2>Add Your House! <small>Os campos seguidos de *, são de preenchimento obrigatório</small></h2>
+    </div>
+    
+}
+
+<body>
+    <form role="form" method="POST" action="@Url.RouteUrl("Default")" enctype="multipart/form-data">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Basic Info<small>Info present on House listing</small></h3>
+            </div>
+            <div class="container">
+                <div id="namef" class="form-group">
+                    <label for="nameShort">Name*: </label>
+                    <input type="text" class="form-control" name="nameShort">
+                    @Html.ValidationMessageFor(Model => Model.nameShort)
+                </div>
+
+                <div id="description" class="form-group">
+                    <label for="descriptionLong">Description: </label>
+                    <textarea class="form-control" name="descriptionLong" ></textarea>
+                </div>
+
+                <div id="price" class="form-group">
+                    <label for="pricePerWeek">Price per Week*: </label>
+                    <input type="number" class="form-control" name="pricePerWeek">
+                    @Html.ValidationMessageFor(Model => Model.pricePerWeek)
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">House Characteristics<small>House full characteristics</small></h3>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 col-md-3">
+                        <div id="capacityf" class="form-group">
+                            <label for="characteristics.capacity">Capacity*<small>( nr. people )</small>: </label>
+                            <input type="number" class="form-control" name="characteristics.capacity">
+                            @Html.ValidationMessageFor(Model => Model.characteristics.capacity)
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div id="dimension" class="form-group">
+                            <label for="characteristics.dimension">Dimension*<small>( in m2 )</small>:</label>
+                            <input type="number" class="form-control" name="characteristics.dimension">
+                            @Html.ValidationMessageFor(Model => Model.characteristics.dimension)
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div id="divisions" class="form-group">
+                            <label for="characteristics.divisions">Divisions*: </label>
+                            <input type="number" class="form-control" name="characteristics.divisions">
+                            @Html.ValidationMessageFor(Model => Model.characteristics.divisions)
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div id="rooms" class="form-group">
+                            <label for="characteristics.rooms">Rooms*: </label>
+                            <input type="number" class="form-control" name="characteristics.rooms">
+                            @Html.ValidationMessageFor(Model => Model.characteristics.rooms)
+                        </div>
+                    </div>
+                </div>
+            </div><!--/container-->
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Location Info<small>Info for location this House</small></h3>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4 col-md-3 loc">
+                        <div id="locName" class="form-group">
+                            <label for="location.name">Name*: </label>
+                            <input type="text" class="form-control" name="location.name">
+                            @Html.ValidationMessageFor(Model => Model.location.name)
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-md-3 loc">
+                        <div id="latitude" class="form-group">
+                            <label for="location.coordinates.latitude">Latitude: </label>
+                            <input type="text" class="form-control" name="location.coordinates.latitude">
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-md-3 loc">
+                        <div id="longitude"class="form-group">
+                            <label for="location.coordinates.longitude">Longitude: </label>
+                            <input type="text" class="form-control" name="location.coordinates.longitude">
+                        </div>
+                    </div>
+                </div>
+            </div><!--/container-->
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Photos<small>Adding more photos make choosing easier</small></h3>
+            </div>
+            <div class="container">
+                <div class="form-group">
+                    <label for="photos.mainPhoto">Main Photo: </label>
+                    <input type="file" name="mainPhoto" accept="image/*" />
+                </div>
+
+                <div class="form-group">
+                    <label for="photos.mainPhoto">Other Photos: </label>
+                    <input type="file" name="otherPhotoList" accept="image/*" multiple />
+                </div>
+
+            </div><!--/container-->
+        </div>
+
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+    
+</body>

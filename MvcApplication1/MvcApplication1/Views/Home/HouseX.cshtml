@@ -1,0 +1,211 @@
+﻿@using System.Web.Script.Serialization
+@using IMobileDataModel
+@using System.Text.RegularExpressions
+@model Estate
+
+@section head{
+    <link href="../../Content/particular/HouseX.css" rel="stylesheet" />
+    <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script src="../../Content/particularjs/HouseX.js"></script>
+    <!-- FullCalendar -->
+    <link rel='stylesheet' type='text/css' href='../../Content/fullcalendar/fullcalendar.css' />
+    <!--<script type='text/javascript' src='../../Content/fullcalendar/jquery.min.js'></script>-->
+    <script type='text/javascript' src='../../Content/fullcalendar/fullcalendar.js'></script>
+
+
+
+
+    <script>
+
+        var pageModel = @(Utils.ConverterUtils.ConvertToJson(Model));
+        pageModel = eval(pageModel);
+
+        $(function () {
+            setPageButtonClick();            
+            calendarInit();
+            otherImagePopUp();
+        })
+
+    </script>
+
+    <script>
+
+        function initialize(){
+
+            var lat = "@(Model.location.coordinates.latitude.ToString().Replace(",", "."))";
+            var lon = "@(Model.location.coordinates.longitude.ToString().Replace(",", "."))";
+
+            var map_canvas = document.getElementById('Map');
+            var map_options = {
+                center: new google.maps.LatLng(lat, lon),
+                zoom: 14,
+                minZoom: 6,
+                scrollwheel: false,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            }
+            var map = new google.maps.Map(map_canvas, map_options)
+
+            var marker = new google.maps.Marker({
+                position: new google.maps.LatLng(lat, lon),
+                map: map,
+                title: "@(Model.nameShort)"
+            });
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+
+   </script>
+
+    
+    
+}
+
+@section NavbarButtons
+{
+    <li><a href="../../Index">Home</a></li>
+    <li><a href="../../Houses">Houses</a></li>
+    <li><a href="../AddHouse">Add a House</a></li>
+    <li><a href="../../About">About</a></li>
+}
+<!-- Main HouseX Info -->
+<div class="container">
+    <div class="jumbotron">
+        <div class="media">
+            <a class="pull-left">
+                <img class="media-object" src="../Photos/@Model.nameShort/@Model.photos.mainPhoto" alt="...">
+            </a>
+
+            <div class="media-body">
+                <h2 class="media-heading">@Model.nameShort</h2>
+
+                <ul class=" mylist">
+                    <li>Capacity: @(Model.characteristics.capacity) People</li>
+                    <li>Dimension: @Model.characteristics.dimension m2</li>
+                    <li>Rooms: @Model.characteristics.divisions</li>
+                    <li>BedRooms: @Model.characteristics.rooms</li>
+                </ul>
+
+                <div class="price">
+                    <h3>Week Price: @Model.pricePerWeek&#128</h3>
+
+                    <a class="btn btn-primary" role="button">Make your reservation here</a>
+                </div>
+            </div>
+
+         </div>
+           
+
+    </div>
+</div> <!-- /container -->
+
+<!-- Description -->
+<div class="container" id="Information">
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2 class="panel-title">Description</h2>
+        </div>
+        <div class="panel-body">
+            <p>
+                @Model.descriptionLong
+            </p>
+        </div>
+    </div>
+</div><!-- /container -->
+
+<!-- Availability -->
+<div class="container" id="Availability">
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2 class="panel-title">Availability</h2>
+        </div>
+        <div class="panel-body">
+           
+            <div id="calendar"></div>
+
+        </div>
+    </div>
+</div><!-- /container -->
+
+<!-- Other Images -->
+<div class="container">
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Other Images</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                @foreach (String photo in Model.photos.otherPhotos)
+                {
+                    <div class="col-sm-6 col-md-3">
+                        <a class="thumbnail">
+                            <img class="popupSelected" src="../Photos/@Model.nameShort/@photo" alt="...">
+                        </a>
+                    </div>
+                }
+            </div><!-- /row -->
+            <img id="showUp"/>
+        </div><!-- /panel-body -->
+    </div>
+</div> <!-- /container -->
+
+<div class="container" >
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2 class="panel-title">Location</h2>
+        </div>
+        <div id="Map"></div>
+    </div>
+</div>
+
+
+    <!-- Testimonials -->
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 id="testimonialsTitle" class="panel-title">Testimonials</h3>
+                <div id="testimonialList" class="list-group">
+                    @foreach (Testimonial testi in Model.testimonials)
+                    {
+                        <div class="list-group-item">
+                            <h3 class="list-group-item-heading">@(testi.author) / 
+                            @for (int i = 0; i < 5; ++i)
+                            {
+                                if (i < testi.stars)
+                                {
+                                    <span class="glyphicon glyphicon-star"></span>
+                                }
+                                else
+                                {
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                }
+                            }<small> at @(testi.day)</small></h3>
+
+                            <p class="list-group-item-text">@(testi.description)</p>
+                        </div>
+                    }
+                </div>
+                <form method="post" class="input-group" enctype="text/plain">
+                    <div class="input-group-btn">
+                        <input readonly id="rateButton" class="btn btn-default dropdown" data-toggle="dropdown" placeholder="Rate" />
+                        <ul class="dropdown-menu">
+                            @for (int i = 1; i <= 5; ++i)
+                            {
+                                <li><a id=@("rateButton"+i)>@i star</a></li>
+                            }
+                        </ul>
+                    </div><!-- /btn-group -->
+                    <textarea id="newTestimonial" class="form-control" name="description"></textarea>
+
+                    <span class="input-group-btn">
+                        <button id="addButton" class="btn btn-default" type="button">Add</button>
+                    </span>
+                </form><!-- /input-group -->
+            </div>
+        </div>
+     </div> <!-- /container -->
+

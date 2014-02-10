@@ -1,0 +1,39 @@
+﻿.panel-title{
+    font:bold;
+}
+
+/*Name*/
+#namef{
+    width:60%
+}
+
+/*Description*/
+#description{
+    width:90%;
+}
+textarea{
+    resize:vertical;
+}
+
+/*PricePerWeek*/
+#price{
+    width:20%;
+}
+
+/*Caracteristics*/
+#capacityf,#dimension,#divisions,#rooms{
+    width:100%;
+}
+.col-md-3{
+    width:24%;
+}
+
+/*Location*/
+#locName,#latitude,#longitude{
+    width:100%;
+}
+
+.loc{
+    width:32%;
+}
+

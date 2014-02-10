@@ -1,0 +1,127 @@
+﻿@using System.Web.Script.Serialization
+@using IMobileDataModel
+@using IMobileLogic
+@using System.Web.Mvc
+
+@model PageMap
+
+@{ViewBag.Title = "Houses";}
+
+@section head {    
+    <link href="../Content/particular/Houses.css" rel="stylesheet" />
+    <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    
+    <script>
+        var pageModel = @(Utils.ConverterUtils.ConvertToJson(Model));
+        pageModel = eval(pageModel);
+        
+        $(function () {
+            $("#pageButton" + "@(Model.getCurrentPage())").css("background", "#DDEEFF");
+            pagination();
+            revPagination();
+        });
+
+        function initialize() {
+
+            var lat = pageModel.medlat;
+            var long = pageModel.medLong;
+            
+            var map_canvas = document.getElementById('map_canvas');
+            var map_options = {
+                center: new google.maps.LatLng(pageModel.pages[pageModel.currentPage].medLat,pageModel.pages[pageModel.currentPage].medLong),
+                zoom: 6,
+                scrollwheel: false,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            }
+            map = new google.maps.Map(map_canvas, map_options)
+            
+            for(var y = 1; y <= pageModel.numberOfPages;++y)
+            {
+                for(var i = 0;i< pageModel.pages[y].pageList.length ;++i)
+                {
+                    var marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(pageModel.pages[y].pageList[i].location.coordinates.latitude ,pageModel.pages[y].pageList[i].location.coordinates.longitude),
+                        map: map,
+                        title: pageModel.pages[y].pageList[i].nameShort
+                    });
+                }
+            }
+        }
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+    
+    <script src="../Content/particularjs/Houses.js"></script>
+
+}
+@section NavBarButtons
+{
+    <li><a href="../Index">Home</a></li>
+    <li class="active"><a href="../Houses">Houses</a></li>
+    <li><a href="../AddHouse">Add a House</a></li>
+    <li><a href="../About">About</a></li>
+}
+
+@section junbotron{
+    <!-- Houses Page Welcome -->
+
+        <!-- Main component for a primary marketing message or call to action -->
+        <div class="jumbotron">
+            <h2>Houses <small>Talvez uma frase introdutoria para a presente pagina</small></h2>
+        </div>
+}
+
+<body>
+    
+
+    <!-- Houses List -->
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div id="houseList" class="media">
+                    @foreach (Estate house in Model.pages[Model.getCurrentPage()].pageList)
+                    {
+                        <div class="media">
+                            <a class="pull-left" href="/HouseX/@(house.nameShort)">
+                                <img class="media-object" src="../Photos/@house.nameShort/@house.photos.mainPhoto" alt="...">
+                            </a>
+                            <div class="media-body">
+                                <h4 class="media-heading">@(house.nameShort)</h4> 
+                                @for (int i = 0; i < 5;++i )
+                                {
+                                    if(i < house.averageRate)
+                                    { 
+                                        <span class="glyphicon glyphicon-star"></span>
+                                    }
+                                    else{
+                                        <span class="glyphicon glyphicon-star-empty"></span>
+                                    }
+                                }
+                                
+                                @(house.pricePerWeek + "€") / @(house.location.name)
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div id="mapPainel" class="panel panel-default">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">Mapa</h2>
+                    </div>
+                    <div id="map_canvas"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Page Bar -->
+        <div>
+            <ul class="pagination">
+                @for (int i = 0; i < Model.pages.Count; ++i)
+                {
+                    <li><a class="pageButton" id=@("pageButton"+(i+1))>@(i + 1)</a></li>
+                }
+            </ul>
+        </div>
+    </div>
+</body>
+

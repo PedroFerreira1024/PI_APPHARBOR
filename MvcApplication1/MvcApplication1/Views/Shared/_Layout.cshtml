@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title - IMobile</title>
+
+    <link href="../../Content/dist/css/bootstrap.css" rel="stylesheet"/>
+    <link href="../../Content/particular/NavBar.css" rel="stylesheet" />
+    
+    <link href="../../Content/particular/SearchBar.css" rel="stylesheet" />
+
+    <script src="../../Content/particularjs/SearchBar.js"></script>
+
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script src="../../Content/particularjs/Layout.js"></script>
+
+
+    @RenderSection("head", false)
+    
+    <script>
+        $(function () {
+            searchPanel();
+            searchSubmit();
+            $("#AvailFrom").datepicker();
+            $("#AvailTo").datepicker();
+        });
+    </script>
+
+</head>
+<body>
+    <div class="container">
+        <!-- Fixed navbar --><!-- !! This should be on every page !! -->
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <p class="navbar-brand">IMobile</p>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        @RenderSection("NavBarButtons", false)
+                        
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a id="toggleSearch">Search</a></li>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+
+            <!-- SearchPanel -->
+            <div id="searchPanel" class="panel panel-default">
+                <div id="searchBody" class="panel-body">
+                    <form class="row" id="searchForm">
+                        <div id="name" class="col-sm-5">
+                            <!-- Name -->
+                            <div class="form-group">
+                                <input type="text" name="Name" id="Name" class="form-control" placeholder="Name">
+                            </div>
+                        </div>
+                        <div id="location" class="col-sm-5">
+                            <!-- Loc -->
+                            <div class="form-group">
+                                <input type="text" name="Location" id="Location" class="form-control" placeholder="Location">
+                            </div>
+                        </div>
+                        <div id="pricelow" class="col-sm-5">
+                            <!-- PriceLow -->
+                            <div class="form-group">
+                                <input type="text" name="PriceLow" id="PriceLow" class="form-control" placeholder="PriceLow" title="Only Numbers!!(0-9)">
+                            </div>
+                        </div>
+                        <div id="pricehigh" class="col-sm-5">
+                            <!-- PriceHigh -->
+                            <div class="form-group">
+                                <input type="text" name="PriceHigh" id="PriceHigh" class="form-control" placeholder="PriceHigh" title="Only Numbers!!(0-9)">
+                            </div>
+                        </div>
+
+                        <div id="availFrom" class="col-sm-5">
+                            <!-- AvailFrom -->
+                            <div class="form-group">
+                                <input type="text" name="AvailFrom" id="AvailFrom" class="form-control" placeholder="from (d/m/y)" title="This is a Date">
+                            </div>
+                        </div>
+
+                        <div id="availTo" class="col-sm-5">
+                            <!-- AvailTo -->
+                            <div class="form-group">
+                                <input type="text" name="AvailTo" id="AvailTo" class="form-control" placeholder="to (d/m/y)" title="This is a Date">
+                            </div>
+                        </div>
+                        
+                        <div id="capacity" class="col-sm-5">
+                            <!-- Capacity -->
+                            <div class="form-group">
+                                <input type="text" name="Capacity" id="Capacity" class="form-control" placeholder="Capacity" title="Only Numbers!!(0-9)">
+                            </div>
+                        </div>
+                        <div id="searchButton" class="col-sm-5">
+                            <button class="btn btn-default" id="searchBtn">Search</button>
+                        </div>
+                    </form><!-- /row -->
+                </div>
+            </div><!-- /searchPanel -->
+        </div>
+
+        
+
+        
+
+        @RenderSection("junbotron", false)
+
+        @RenderBody()
+
+    </div><!-- /container -->
+    
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!-- <script src="../../Scripts/jquery-1.8.2.min.js"></script> -->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../../Content/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

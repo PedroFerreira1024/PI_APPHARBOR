@@ -1,0 +1,17 @@
+.LastInserted-info{
+    font-size: 16px;
+}
+
+.col-md-3 {
+    width: 20%;
+    height : 200px;
+    max-height : 200px
+}
+
+.col-md-3 > .thumbnail{
+    height :inherit;
+}
+
+.thumbnail > img {
+    height : 90%;/*170px fuciona em 1280x800*/
+}

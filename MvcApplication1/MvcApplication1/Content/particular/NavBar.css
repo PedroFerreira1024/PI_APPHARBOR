@@ -1,0 +1,13 @@
+body {
+    min-height: 1100px;
+    padding-top: 70px;
+}
+
+.navbar-brand {
+    font-size: 30px;
+    line-height: 20px;
+}
+
+.navbar-default .navbar-brand{
+    color:rgb(62, 62, 203);
+}
